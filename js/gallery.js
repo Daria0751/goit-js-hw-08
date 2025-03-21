@@ -64,28 +64,53 @@ const images = [
   },
 ];
 
-const galleryItems = [
-  { preview: "url1_small.jpg", original: "url1_large.jpg", alt: "Image 1" },
-  { preview: "url2_small.jpg", original: "url2_large.jpg", alt: "Image 2" },
-  { preview: "url3_small.jpg", original: "url3_large.jpg", alt: "Image 3" },
+const images = [
+  {
+    preview: 'small-image1.jpg',
+    original: 'large-image1.jpg',
+    description: 'Image 1 description'
+  },
+  {
+    preview: 'small-image2.jpg',
+    original: 'large-image2.jpg',
+    description: 'Image 2 description'
+  },
+  {
+    preview: 'small-image3.jpg',
+    original: 'large-image3.jpg',
+    description: 'Image 3 description'
+  }
 ];
 
-const galleryContainer = document.querySelector(".gallery");
+const gallery = document.querySelector('ul.gallery');
 
-const galleryMarkup = images
-  .map(
-    ({ preview, original, description }) => `
-      <li class="gallery-item">
-        <a class="gallery-link" href="${original}">
-          <img class="gallery-image" src="${preview}" alt="${description}" />
-        </a>
-      </li>`
-  )
-  .join("");
+gallery.innerHTML = images.map(({ preview, original, description }) => `
+  <li class="gallery-item">
+    <a class="gallery-link" href="${original}">
+      <img
+        class="gallery-image"
+        src="${preview}"
+        data-source="${original}"
+        alt="${description}"
+      />
+    </a>
+  </li>
+`).join('');
 
-  const lightbox = new SimpleLightbox(".gallery a", {
-  captionsData: "alt",
-  captionDelay: 250,
+gallery.addEventListener('click', event => {
+  event.preventDefault();
+  
+  const clickedImage = event.target.closest('img.gallery-image');
+  if (!clickedImage) return;
+  
+  const instance = basicLightbox.create(`
+    <div class="modal">
+      <img src="${clickedImage.dataset.source}" alt="${clickedImage.alt}" />
+    </div>
+  `);
+  
+  instance.show();
 });
 
-galleryContainer.innerHTML = galleryMarkup;
+
+
