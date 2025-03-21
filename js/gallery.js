@@ -64,7 +64,7 @@ const images = [
   },
 ];
 
-const images = [
+const imagesArray = [
   {
     preview: 'small-image1.jpg',
     original: 'large-image1.jpg',
